@@ -20,7 +20,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['InterVariable', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Mona Sans', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         xl: '16px',
