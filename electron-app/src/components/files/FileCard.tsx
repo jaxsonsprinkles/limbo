@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Pin, PinOff, Copy, Save, Trash2, FolderOpen, Clock } from 'lucide-react'
+import { Pin, PinOff, Copy, Save, Trash2, FolderOpen, ClockPlus } from 'lucide-react'
 import type { LimboFile } from '../../store/types'
 import { FileIcon } from './FileIcon'
 import { CountdownRing } from './CountdownRing'
-import { formatSize, formatDurationLong } from '../../lib/format'
+import { formatSize, formatDuration, formatDurationLong } from '../../lib/format'
 import { api } from '../../lib/ipc'
 
 const LONG_EXPIRY_THRESHOLD = 1800 // 30 minutes
@@ -138,7 +138,7 @@ export function FileCard({ file, secondsRemaining, onRemove, onUpdate, onToast, 
         <p className="text-[10px] text-limbo-text mt-2 tabular-nums">
           {isLongExpiry
             ? `Expires in ${formatDurationLong(secondsRemaining)}`
-            : secondsRemaining > 0 ? `${secondsRemaining}s left` : 'Expiring…'}
+            : secondsRemaining > 0 ? `${formatDuration(secondsRemaining)} left` : 'Expiring…'}
         </p>
       )}
 
@@ -152,8 +152,8 @@ export function FileCard({ file, secondsRemaining, onRemove, onUpdate, onToast, 
         {!file.isPinned && (
           <>
             <div className="w-px h-4 bg-limbo-border mx-0.5" />
-            <ActionButton icon={Clock} onClick={() => handleExtendExpiry(10 * 60 * 1000)} title="+10 min" />
-            <ActionButton icon={Clock} onClick={() => handleExtendExpiry(60 * 60 * 1000)} title="+1 hour" />
+            <ActionButton icon={ClockPlus} onClick={() => handleExtendExpiry(10 * 60 * 1000)} title="+10 min" />
+            <ActionButton icon={ClockPlus} onClick={() => handleExtendExpiry(60 * 60 * 1000)} title="+1 hour" />
           </>
         )}
       </div>

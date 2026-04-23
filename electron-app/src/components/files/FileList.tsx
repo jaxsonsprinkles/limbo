@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Pin, PinOff, Copy, Save, Trash2, FolderOpen, Clock } from 'lucide-react'
+import { Pin, PinOff, Copy, Save, Trash2, FolderOpen, ClockPlus } from 'lucide-react'
 import type { LimboFile } from '../../store/types'
 import { FileIcon } from './FileIcon'
 import { formatSize, formatDuration, formatDurationLong } from '../../lib/format'
@@ -104,7 +104,7 @@ export function FileListRow({ file, secondsRemaining, onRemove, onUpdate, onToas
         <ListAction icon={Copy} onClick={handleCopy} title="Copy" />
         <ListAction icon={Save} onClick={handleSave} title="Save" />
         <ListAction icon={FolderOpen} onClick={handleOpen} title="Open" />
-        {!file.isPinned && <ListAction icon={Clock} onClick={() => handleExtendExpiry(10 * 60 * 1000)} title="+10m" />}
+        {!file.isPinned && <ListAction icon={ClockPlus} onClick={() => handleExtendExpiry(10 * 60 * 1000)} title="+10m" />}
         <ListAction icon={Trash2} onClick={handleDelete} title="Delete" danger />
       </div>
     </div>

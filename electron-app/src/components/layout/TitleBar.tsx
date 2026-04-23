@@ -8,7 +8,7 @@ export function TitleBar() {
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       <div className="flex items-center gap-2">
-        <div className="w-5 h-5 rounded-md bg-gradient-to-br from-[#7B6CF6] to-primary" />
+        <img src="/logo.png" alt="Limbo" className="w-5 h-5 rounded-md" />
         <span className="text-sm font-semibold text-[#111] tracking-tight">Limbo</span>
       </div>
       <div className="flex items-center gap-1" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>

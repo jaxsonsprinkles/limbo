@@ -60,17 +60,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <a
-        href="#how-it-works"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-limbo-text/60 hover:text-limbo-text transition-colors duration-200"
-      >
-        <span className="text-[11px] font-medium tracking-widest uppercase">
-          Scroll
-        </span>
-        <ArrowDown size={14} className="animate-bounce" />
-      </a>
     </section>
   );
 }

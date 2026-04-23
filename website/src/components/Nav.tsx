@@ -15,12 +15,7 @@ export function Nav() {
       <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-xl gradient-btn flex items-center justify-center shadow-primary shrink-0">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 2L13 5.5V10.5L8 14L3 10.5V5.5L8 2Z" fill="white" fillOpacity="0.9" />
-              <path d="M8 5L11 6.75V10.25L8 12L5 10.25V6.75L8 5Z" fill="white" fillOpacity="0.4" />
-            </svg>
-          </div>
+          <img src="/logo.png" alt="Limbo" className="w-8 h-8 rounded-xl shadow-primary shrink-0" />
           <span className="font-bold text-[#111] tracking-tight text-lg">Limbo</span>
         </a>
 
