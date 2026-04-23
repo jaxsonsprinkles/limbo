@@ -1,5 +1,5 @@
-import { Download, ArrowDown } from 'lucide-react'
-import { AppMockup } from './AppMockup'
+import { Download, ArrowDown } from "lucide-react";
+import { AppMockup } from "./AppMockup";
 
 export function Hero() {
   return (
@@ -15,22 +15,17 @@ export function Hero() {
         <div className="flex flex-col lg:flex-row items-center gap-16">
           {/* Text side */}
           <div className="flex-1 text-center lg:text-left max-w-xl">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/15 text-primary text-xs font-semibold px-3.5 py-1.5 rounded-pill mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Windows · Free · No account needed
-            </div>
-
             <h1 className="text-5xl lg:text-6xl font-black tracking-tight text-[#111] leading-[1.05] mb-5">
-              Your downloads,{' '}
-              <span className="gradient-text">on a leash.</span>
+              Download it. Use it. <span className="gradient-text">Gone.</span>
             </h1>
 
             <p className="text-lg text-limbo-text leading-relaxed mb-8 max-w-lg lg:max-w-none">
-              Limbo sits quietly in your tray and intercepts every file you download —
-              holding it temporarily so you can act on it, then deleting it automatically
-              when the timer runs out.{' '}
-              <span className="text-[#111] font-medium">No more digital clutter. Ever.</span>
+              Limbo sits quietly in your tray and intercepts every file you
+              download — holding it temporarily so you can act on it, then
+              deleting it automatically when the timer runs out.{" "}
+              <span className="text-[#111] font-medium">
+                No more digital clutter. Ever.
+              </span>
             </p>
 
             {/* CTA buttons */}
@@ -53,8 +48,6 @@ export function Hero() {
 
             {/* Social proof / stats */}
             <div className="flex items-center gap-6 mt-10 justify-center lg:justify-start">
-              <Stat value="5 min" label="default expiry" />
-              <div className="w-px h-8 bg-limbo-border" />
               <Stat value="0 clicks" label="to get started" />
               <div className="w-px h-8 bg-limbo-border" />
               <Stat value="100%" label="private & local" />
@@ -69,19 +62,26 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <a href="#how-it-works" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-limbo-text/60 hover:text-limbo-text transition-colors duration-200">
-        <span className="text-[11px] font-medium tracking-widest uppercase">Scroll</span>
+      <a
+        href="#how-it-works"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-limbo-text/60 hover:text-limbo-text transition-colors duration-200"
+      >
+        <span className="text-[11px] font-medium tracking-widest uppercase">
+          Scroll
+        </span>
         <ArrowDown size={14} className="animate-bounce" />
       </a>
     </section>
-  )
+  );
 }
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center lg:text-left">
-      <div className="text-lg font-black text-[#111] tracking-tight">{value}</div>
+      <div className="text-lg font-black text-[#111] tracking-tight">
+        {value}
+      </div>
       <div className="text-[11px] text-limbo-text font-medium">{label}</div>
     </div>
-  )
+  );
 }
