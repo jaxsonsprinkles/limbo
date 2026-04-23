@@ -35,7 +35,10 @@ function getWindowPosition() {
   const rawX = Math.round(
     trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2,
   );
-  const rawY = Math.round(trayBounds.y - windowBounds.height - 4);
+  const rawY =
+    process.platform === "darwin"
+      ? Math.round(trayBounds.y + trayBounds.height + 4)
+      : Math.round(trayBounds.y - windowBounds.height - 4);
   const x = Math.max(
     workArea.x,
     Math.min(rawX, workArea.x + workArea.width - windowBounds.width),
@@ -95,6 +98,9 @@ function createTray() {
   const icon = nativeImage.createFromPath(iconPath);
   tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon);
   tray.setToolTip("Limbo - 0 files waiting");
+  if (process.platform === "darwin") {
+    tray.setIgnoreDoubleClickEvents(true);
+  }
 
   tray.on("click", () => {
     if (!win) return;
@@ -129,7 +135,8 @@ function updateTrayBadge() {
   tray?.setToolTip(`Limbo - ${count} file${count !== 1 ? "s" : ""} waiting`);
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  if (process.platform === "darwin") app.dock.hide();
   // Serve limbo files via limbo:// protocol for image thumbnails
   protocol.registerFileProtocol("limbo", (request, callback) => {
     const filePath = decodeURIComponent(request.url.replace("limbo://", ""));

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-**Limbo** is a Windows-only Electron desktop app that sits in the system tray and watches a folder (Downloads by default). New files are intercepted and given a countdown timer; they auto-delete when the timer expires unless the user saves or pins them. No cloud, no accounts, no network — 100% local.
+**Limbo** is a Windows and macOS Electron desktop app that sits in the system tray and watches a folder (Downloads by default). New files are intercepted and given a countdown timer; they auto-delete when the timer expires unless the user saves or pins them. No cloud, no accounts, no network — 100% local.
 
 ## Commands
 
@@ -54,7 +54,7 @@ Both use React 18 + TypeScript 5 + Vite 5 + Tailwind CSS 3.
   - `watcher.ts` (Chokidar file watcher)
   - `expiry-manager.ts` (per-second tick loop for countdowns)
   - `limbo-store.ts` (JSON file registry persisted to disk)
-  - `clipboard-service.ts` (Windows clipboard via PowerShell)
+  - `clipboard-service.ts` (clipboard: PowerShell on Windows, osascript on macOS)
   - `notification-service.ts`, `settings-service.ts` (electron-store)
 
 **Renderer** (`src/`):
@@ -73,7 +73,7 @@ Both use React 18 + TypeScript 5 + Vite 5 + Tailwind CSS 3.
 
 ### Key Constraints
 
-- Windows-only: clipboard uses PowerShell, tray behavior is Windows-specific
+- Windows and macOS: clipboard uses PowerShell on Windows, osascript on macOS; tray window appears above taskbar on Windows and below menu bar on macOS
 - Compact window: 420×580px tray popup, no resize
 - No external network calls anywhere in the codebase
 - Minimal dependencies — add new packages only when genuinely necessary

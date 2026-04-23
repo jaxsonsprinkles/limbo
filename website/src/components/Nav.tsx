@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Download } from 'lucide-react'
+import { Download, Github } from 'lucide-react'
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -27,6 +27,16 @@ export function Nav() {
         </div>
 
         {/* CTA */}
+        <div className="flex items-center gap-3">
+        <a
+          href="https://github.com/jaxsonsprinkles/limbo"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-limbo-text hover:text-[#111] transition-colors duration-150"
+          aria-label="GitHub repository"
+        >
+          <Github size={20} />
+        </a>
         <a
           href="#download"
           className="gradient-btn flex items-center gap-2 text-white text-sm font-semibold px-4 py-2 rounded-pill shadow-primary"
@@ -34,6 +44,7 @@ export function Nav() {
           <Download size={14} />
           Download
         </a>
+        </div>
       </div>
     </nav>
   )

@@ -1,7 +1,7 @@
 {
   "name": "limbo",
   "version": "1.0.0",
-  "description": "Ephemeral file management for Windows",
+  "description": "Ephemeral file management for Windows and macOS",
   "main": "dist/electron/main.js",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
     "@fontsource-variable/inter": "^5.0.0",
     "chokidar": "^3.6.0",
     "electron-store": "^8.2.0",
-    "lucide-react": "^0.378.0",
+    "lucide-react": "^1.9.0",
     "mime-types": "^2.1.35",
     "mona-sans": "^1.0.0",
     "react": "^18.3.0",
@@ -53,6 +53,14 @@
     "win": {
       "target": "nsis",
       "icon": "resources/icons/icon.ico"
+    },
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+      "icon": "resources/icons/icon.png",
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "title": "Limbo"
     },
     "extraResources": [
       {
