@@ -68,7 +68,7 @@ electron-app/
 ## Code style
 
 - **TypeScript** everywhere — no `any` unless absolutely necessary
-- **No comments** explaining what code does — code should be self-explanatory; comments are only for non-obvious *why*
+- **No comments** explaining what code does — code should be self-explanatory; comments are only for non-obvious _why_
 - **No new dependencies** without discussion — the current dependency count is intentionally small
 - **No abstractions for one use case** — duplication is preferred over premature generalization
 - Match the existing Tailwind class patterns; avoid arbitrary values unless the design system doesn't cover it
@@ -97,12 +97,11 @@ New settings require changes in four places:
 1. Fork the repo and create a branch: `git checkout -b fix/your-bug-name`
 2. Make your changes in the appropriate subfolder (`electron-app/` or `website/`)
 3. Run `npm run build` in the changed subfolder and confirm it builds clean
-4. Open a PR with a clear title and a description of *why* the change is needed, not just what it does
+4. Open a PR with a clear title and a description of _why_ the change is needed, not just what it does
 5. Link any related issue
 
 ## What won't be merged
 
-- macOS / Linux support — the app is intentionally Windows-only for now
 - Cloud sync, accounts, or any network features
 - Features that require new native modules without strong justification
 - UI changes that break the compact tray-window form factor (420×580px)

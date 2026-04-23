@@ -1,10 +1,6 @@
-# Limbo
-
-**Your downloads, on a leash.**
+# Limbo - Your downloads, on a leash
 
 Limbo sits in your system tray and intercepts every file you download. Each file gets a countdown timer — act on it or let it disappear automatically. No more Downloads folder with 4,000 files you'll never open again.
-
-![Limbo app screenshot](electron-app/resources/icons/tray-default.png)
 
 ---
 
@@ -80,6 +76,7 @@ This produces a distributable in `electron-app/dist/`.
 ## Tech stack
 
 **App**
+
 - [Electron](https://www.electronjs.org/) — desktop shell
 - [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) — UI
 - [Zustand](https://zustand-demo.pmnd.rs/) — client state
@@ -88,6 +85,7 @@ This produces a distributable in `electron-app/dist/`.
 - [Vite](https://vite.dev/) — bundler
 
 **Website**
+
 - React + TypeScript + Vite + Tailwind CSS
 
 ## Contributing
