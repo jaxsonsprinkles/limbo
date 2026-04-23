@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openInExplorer: (id: string) => ipcRenderer.invoke('files:openInExplorer', id),
     pinToggle: (id: string) => ipcRenderer.invoke('files:pinToggle', id),
     startDrag: (id: string) => ipcRenderer.send('files:startDrag', id),
+    updateExpiry: (id: string, expiresAt: number) => ipcRenderer.invoke('files:updateExpiry', id, expiresAt),
   },
   settings: {
     get: () => ipcRenderer.invoke('settings:get'),

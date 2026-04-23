@@ -17,4 +17,5 @@ export interface Settings {
   soundEnabled: boolean
   autoLaunch: boolean
   showNotifications: boolean
+  autoClipboard: boolean
 }

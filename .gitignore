@@ -1,0 +1,4 @@
+electron-app/node_modules
+electron-app/dist
+website/node_modules
+website/dist

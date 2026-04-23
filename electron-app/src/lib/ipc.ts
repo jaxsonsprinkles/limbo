@@ -11,6 +11,7 @@ declare global {
         openInExplorer: (id: string) => Promise<{ ok: boolean }>
         pinToggle: (id: string) => Promise<{ ok: boolean; isPinned: boolean }>
         startDrag: (id: string) => void
+        updateExpiry: (id: string, expiresAt: number) => Promise<{ ok: boolean }>
       }
       settings: {
         get: () => Promise<Settings>

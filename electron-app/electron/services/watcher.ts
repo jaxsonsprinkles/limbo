@@ -8,9 +8,11 @@ import { limboStore, LimboFile } from './limbo-store'
 import { getLimboDir, moveFile } from '../utils/path-utils'
 import { settingsService } from './settings-service'
 import { notificationService } from './notification-service'
+import { copyFileToClipboard } from './clipboard-service'
 
 let watchers: FSWatcher[] = []
 let win: BrowserWindow | null = null
+const inFlight = new Set<string>()
 
 function shouldIntercept(filePath: string): boolean {
   const ext = path.extname(filePath).toLowerCase()
@@ -26,6 +28,8 @@ function shouldIntercept(filePath: string): boolean {
 
 async function onFileAdded(filePath: string): Promise<void> {
   if (!shouldIntercept(filePath)) return
+  if (inFlight.has(filePath)) return
+  inFlight.add(filePath)
   try {
     const stat = await fs.promises.stat(filePath)
     const id = crypto.randomUUID()
@@ -47,7 +51,12 @@ async function onFileAdded(filePath: string): Promise<void> {
     limboStore.add(file)
     win?.webContents.send('file:added', file)
     notificationService.notify(`"${file.filename}" is in Limbo`, `Expires in ${Math.round(settings.defaultExpirySecs / 60)} min`)
-  } catch {}
+    if (settings.autoClipboard) {
+      copyFileToClipboard(file.limboPath).catch(() => {})
+    }
+  } catch {} finally {
+    inFlight.delete(filePath)
+  }
 }
 
 export const watcherService = {
@@ -64,7 +73,7 @@ export const watcherService = {
       const w = chokidar.watch(folder, {
         ignoreInitial: true,
         awaitWriteFinish: { stabilityThreshold: 1500, pollInterval: 200 },
-        ignored: /(^|[\/\\])\../,
+        ignored: [/(^|[\/\\])\.\./, getLimboDir()],
         persistent: true,
         depth: 0,
       })

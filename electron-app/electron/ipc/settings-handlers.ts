@@ -1,4 +1,4 @@
-import { ipcMain, dialog } from 'electron'
+import { ipcMain, dialog, app } from 'electron'
 import { settingsService } from '../services/settings-service'
 import { watcherService } from '../services/watcher'
 
@@ -8,6 +8,9 @@ export function registerSettingsHandlers() {
   ipcMain.handle('settings:set', (_, partial) => {
     const updated = settingsService.set(partial)
     watcherService.restart()
+    if (typeof partial.autoLaunch === 'boolean') {
+      app.setLoginItemSettings({ openAtLogin: partial.autoLaunch })
+    }
     return updated
   })
 

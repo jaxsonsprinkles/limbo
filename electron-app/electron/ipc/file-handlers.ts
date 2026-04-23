@@ -1,8 +1,16 @@
-import { ipcMain, shell, dialog, BrowserWindow } from 'electron'
+import { ipcMain, shell, dialog, BrowserWindow, nativeImage, app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { limboStore } from '../services/limbo-store'
 import { copyFileToClipboard } from '../services/clipboard-service'
+
+const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged
+
+function getDragIconPath(): string {
+  return isDev
+    ? path.join(process.cwd(), 'resources/icons/drag-icon.png')
+    : path.join(process.resourcesPath, 'icons/drag-icon.png')
+}
 
 export function registerFileHandlers(getWindow: () => BrowserWindow | null) {
   ipcMain.handle('files:getAll', () => limboStore.getAll())
@@ -55,6 +63,17 @@ export function registerFileHandlers(getWindow: () => BrowserWindow | null) {
   ipcMain.on('files:startDrag', (event, id: string) => {
     const file = limboStore.get(id)
     if (!file || !fs.existsSync(file.limboPath)) return
-    event.sender.startDrag({ file: file.limboPath, icon: file.limboPath })
+    const iconPath = getDragIconPath()
+    const icon = fs.existsSync(iconPath)
+      ? nativeImage.createFromPath(iconPath)
+      : nativeImage.createEmpty()
+    event.sender.startDrag({ file: file.limboPath, icon })
+  })
+
+  ipcMain.handle('files:updateExpiry', (_, id: string, expiresAt: number) => {
+    const file = limboStore.get(id)
+    if (!file) return { ok: false }
+    limboStore.update(id, { expiresAt })
+    return { ok: true }
   })
 }

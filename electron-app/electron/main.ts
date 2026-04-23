@@ -1,6 +1,8 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron'
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain, screen, protocol } from 'electron'
 import path from 'path'
+import fs from 'fs'
 import { limboStore } from './services/limbo-store'
+import { settingsService } from './services/settings-service'
 import { expiryManager } from './services/expiry-manager'
 import { watcherService } from './services/watcher'
 import { registerFileHandlers } from './ipc/file-handlers'
@@ -20,8 +22,11 @@ function getWindowPosition() {
   if (!tray || !win) return { x: 0, y: 0 }
   const trayBounds = tray.getBounds()
   const windowBounds = win.getBounds()
-  const x = Math.round(trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2)
-  const y = Math.round(trayBounds.y - windowBounds.height - 4)
+  const { workArea } = screen.getPrimaryDisplay()
+  const rawX = Math.round(trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2)
+  const rawY = Math.round(trayBounds.y - windowBounds.height - 4)
+  const x = Math.max(workArea.x, Math.min(rawX, workArea.x + workArea.width - windowBounds.width))
+  const y = Math.max(workArea.y, Math.min(rawY, workArea.y + workArea.height - windowBounds.height))
   return { x, y }
 }
 
@@ -65,6 +70,9 @@ function createTray() {
     ? path.join(process.cwd(), 'resources/icons/tray-default.png')
     : path.join(process.resourcesPath, 'icons/tray-default.png')
 
+  if (!fs.existsSync(iconPath)) {
+    console.warn('[tray] icon not found at', iconPath)
+  }
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon)
   tray.setToolTip('Limbo — 0 files waiting')
@@ -97,6 +105,12 @@ function updateTrayBadge() {
 }
 
 app.whenReady().then(() => {
+  // Serve limbo files via limbo:// protocol for image thumbnails
+  protocol.registerFileProtocol('limbo', (request, callback) => {
+    const filePath = decodeURIComponent(request.url.replace('limbo://', ''))
+    callback({ path: filePath })
+  })
+
   limboStore.init()
   createWindow()
   createTray()
@@ -106,6 +120,10 @@ app.whenReady().then(() => {
 
   ipcMain.on('window:minimize', () => win?.minimize())
   ipcMain.on('window:close', () => win?.hide())
+
+  // Apply persisted autoLaunch setting on startup
+  const settings = settingsService.get()
+  app.setLoginItemSettings({ openAtLogin: settings.autoLaunch })
 
   if (win) {
     expiryManager.start(win)

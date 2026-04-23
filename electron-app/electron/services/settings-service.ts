@@ -9,15 +9,17 @@ export interface Settings {
   soundEnabled: boolean
   autoLaunch: boolean
   showNotifications: boolean
+  autoClipboard: boolean
 }
 
 const defaults: Settings = {
   watchedFolders: [path.join(os.homedir(), 'Downloads')],
-  defaultExpirySecs: 600,
+  defaultExpirySecs: 300,
   fileTypeFilter: { mode: 'all', extensions: [] },
   soundEnabled: false,
   autoLaunch: false,
   showNotifications: true,
+  autoClipboard: true,
 }
 
 const store = new Store<Settings>({ defaults })

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Plus, Trash2, FolderOpen, Clock, Filter, Bell } from 'lucide-react'
+import { useEffect, useState, useRef } from 'react'
+import { Plus, Trash2, FolderOpen, Clock, Filter, Bell, X } from 'lucide-react'
 import type { Settings } from '../store/types'
 import { api } from '../lib/ipc'
 import { Button } from '../components/ui/Button'
@@ -17,6 +17,8 @@ const EXPIRY_OPTIONS = [
 export function SettingsView() {
   const [settings, setSettings] = useState<Settings | null>(null)
   const [saving, setSaving] = useState(false)
+  const [extInput, setExtInput] = useState('')
+  const extInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     api.settings.get().then(setSettings)
@@ -43,6 +45,33 @@ export function SettingsView() {
     await update({ watchedFolders: settings.watchedFolders.filter((f) => f !== folder) })
   }
 
+  function addExtension(raw: string) {
+    if (!settings) return
+    const ext = raw.replace(/^\./, '').toLowerCase().trim()
+    if (!ext) return
+    const extensions = settings.fileTypeFilter.extensions
+    if (extensions.includes(ext)) return
+    update({ fileTypeFilter: { ...settings.fileTypeFilter, extensions: [...extensions, ext] } })
+    setExtInput('')
+  }
+
+  function removeExtension(ext: string) {
+    if (!settings) return
+    update({
+      fileTypeFilter: {
+        ...settings.fileTypeFilter,
+        extensions: settings.fileTypeFilter.extensions.filter((e) => e !== ext),
+      },
+    })
+  }
+
+  function handleExtKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault()
+      addExtension(extInput)
+    }
+  }
+
   if (!settings) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -50,6 +79,8 @@ export function SettingsView() {
       </div>
     )
   }
+
+  const showExtensions = settings.fileTypeFilter.mode !== 'all'
 
   return (
     <div className="flex-1 overflow-y-auto px-3 pb-4">
@@ -110,19 +141,64 @@ export function SettingsView() {
                 >
                   {settings.fileTypeFilter.mode === mode && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                 </div>
-                <span className="text-xs text-[#111] capitalize">{mode === 'all' ? 'Intercept all files' : mode === 'include' ? 'Only listed types' : 'Exclude listed types'}</span>
+                <span className="text-xs text-[#111] capitalize">
+                  {mode === 'all' ? 'Intercept all files' : mode === 'include' ? 'Only listed types' : 'Exclude listed types'}
+                </span>
               </label>
             ))}
           </div>
+
+          {/* Extension tag editor */}
+          {showExtensions && (
+            <div className="mt-3 space-y-2">
+              <div className="flex flex-wrap gap-1">
+                {settings.fileTypeFilter.extensions.map((ext) => (
+                  <span key={ext} className="flex items-center gap-1 bg-primary/10 text-primary text-[10px] font-mono px-2 py-0.5 rounded-full">
+                    .{ext}
+                    <button onClick={() => removeExtension(ext)} className="hover:text-limbo-danger transition-colors">
+                      <X size={9} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-1.5">
+                <input
+                  ref={extInputRef}
+                  type="text"
+                  value={extInput}
+                  onChange={(e) => setExtInput(e.target.value)}
+                  onKeyDown={handleExtKeyDown}
+                  placeholder="Add extension (e.g. pdf)"
+                  className="flex-1 bg-limbo-muted rounded-lg px-2.5 py-1.5 text-xs text-[#111] placeholder:text-limbo-text outline-none border border-transparent focus:border-primary/40 transition-colors"
+                />
+                <button
+                  onClick={() => addExtension(extInput)}
+                  className="px-2.5 py-1.5 bg-primary/10 text-primary rounded-lg text-xs hover:bg-primary/20 transition-colors"
+                >
+                  <Plus size={11} />
+                </button>
+              </div>
+            </div>
+          )}
         </Section>
 
         {/* Notifications */}
         <Section icon={Bell} title="Notifications">
           <div className="space-y-3">
             <Toggle
+              checked={settings.autoClipboard}
+              onChange={(v) => update({ autoClipboard: v })}
+              label="Copy to clipboard on arrival"
+            />
+            <Toggle
               checked={settings.showNotifications}
               onChange={(v) => update({ showNotifications: v })}
               label="Show system notifications"
+            />
+            <Toggle
+              checked={settings.soundEnabled}
+              onChange={(v) => update({ soundEnabled: v })}
+              label="Play sound on file arrival"
             />
             <Toggle
               checked={settings.autoLaunch}
