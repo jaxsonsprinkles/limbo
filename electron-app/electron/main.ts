@@ -74,6 +74,7 @@ function createWindow() {
     win.loadFile(path.join(__dirname, "../renderer/index.html"));
   }
 
+
   win.on("blur", () => {
     if (win && !win.webContents.isDevToolsOpened()) {
       win.hide();

@@ -1,11 +1,13 @@
 {
   "name": "limbo",
+  "author": "Jaxson Sprinkles",
   "version": "1.0.0",
   "description": "Ephemeral file management for Windows and macOS",
   "main": "dist/electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.node.json && vite build && electron-builder",
+    "build": "tsc -p tsconfig.node.json && vite build && electron-builder --win",
+    "build:mac": "tsc -p tsconfig.node.json && vite build && electron-builder --mac",
     "build:renderer": "vite build",
     "build:electron": "tsc -p tsconfig.node.json",
     "preview": "vite preview"
@@ -47,7 +49,8 @@
       "output": "release"
     },
     "files": [
-      "dist/**/*",
+      "dist/electron/**/*",
+      "dist/renderer/**/*",
       "resources/**/*"
     ],
     "win": {
@@ -55,7 +58,15 @@
       "icon": "resources/icons/icon.ico"
     },
     "mac": {
-      "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
       "icon": "resources/icons/icon.png",
       "category": "public.app-category.productivity"
     },

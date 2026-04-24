@@ -14,7 +14,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 cd electron-app
 npm install
 npm run dev            # Vite dev server + Electron with hot reload
-npm run build          # Full build: tsc + vite build + electron-builder → release/
+npm run build          # Windows build: tsc + vite build + electron-builder → release/
+npm run build:mac      # macOS build (must run on a Mac)
 npm run build:renderer # Build just the React UI
 npm run build:electron # Compile just the Electron main process
 ```

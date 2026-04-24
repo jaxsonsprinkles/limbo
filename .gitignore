@@ -1,4 +1,5 @@
 electron-app/node_modules
 electron-app/dist
+electron-app/release
 website/node_modules
 website/dist
