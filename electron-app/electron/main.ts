@@ -156,7 +156,13 @@ app.whenReady().then(async () => {
 
   // Apply persisted autoLaunch setting on startup
   const settings = settingsService.get();
-  app.setLoginItemSettings({ openAtLogin: settings.autoLaunch });
+  if (app.isPackaged) {
+    try {
+      app.setLoginItemSettings({ openAtLogin: settings.autoLaunch });
+    } catch {
+      // macOS rejects login item registration for unsigned builds
+    }
+  }
 
   if (win) {
     expiryManager.start(win);

@@ -8,8 +8,12 @@ export function registerSettingsHandlers() {
   ipcMain.handle('settings:set', (_, partial) => {
     const updated = settingsService.set(partial)
     watcherService.restart()
-    if (typeof partial.autoLaunch === 'boolean') {
-      app.setLoginItemSettings({ openAtLogin: partial.autoLaunch })
+    if (typeof partial.autoLaunch === 'boolean' && app.isPackaged) {
+      try {
+        app.setLoginItemSettings({ openAtLogin: partial.autoLaunch })
+      } catch {
+        // macOS rejects login item registration for unsigned builds
+      }
     }
     return updated
   })
