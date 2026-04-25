@@ -2,6 +2,7 @@ import { ipcMain, shell, BrowserWindow, nativeImage, app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { limboStore } from '../services/limbo-store'
+import { ignoreNextAdd } from '../services/watcher'
 import { copyFileToClipboard } from '../services/clipboard-service'
 
 const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged
@@ -27,6 +28,7 @@ export function registerFileHandlers(getWindow: () => BrowserWindow | null) {
   ipcMain.handle('files:savePermanently', async (_, id: string) => {
     const file = limboStore.get(id)
     if (!file) return { ok: false }
+    ignoreNextAdd(file.originalPath)
     await fs.promises.copyFile(file.limboPath, file.originalPath)
     limboStore.delete(id)
     try { await fs.promises.unlink(file.limboPath) } catch {}

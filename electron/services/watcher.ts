@@ -59,6 +59,11 @@ async function onFileAdded(filePath: string): Promise<void> {
   }
 }
 
+export function ignoreNextAdd(filePath: string, durationMs = 5000): void {
+  inFlight.add(filePath)
+  setTimeout(() => inFlight.delete(filePath), durationMs)
+}
+
 export const watcherService = {
   start(window: BrowserWindow) {
     win = window
