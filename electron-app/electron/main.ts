@@ -22,6 +22,10 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0);
 }
 
+if (process.platform === "darwin") {
+  app.dock.hide();
+}
+
 let win: BrowserWindow | null = null;
 let tray: Tray | null = null;
 
@@ -137,7 +141,6 @@ function updateTrayBadge() {
 }
 
 app.whenReady().then(async () => {
-  if (process.platform === "darwin") app.dock.hide();
   // Serve limbo files via limbo:// protocol for image thumbnails
   protocol.registerFileProtocol("limbo", (request, callback) => {
     const filePath = decodeURIComponent(request.url.replace("limbo://", ""));
