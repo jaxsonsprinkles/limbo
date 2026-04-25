@@ -1,4 +1,4 @@
-import { ipcMain, shell, dialog, BrowserWindow, nativeImage, app } from 'electron'
+import { ipcMain, shell, BrowserWindow, nativeImage, app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { limboStore } from '../services/limbo-store'
@@ -27,12 +27,7 @@ export function registerFileHandlers(getWindow: () => BrowserWindow | null) {
   ipcMain.handle('files:savePermanently', async (_, id: string) => {
     const file = limboStore.get(id)
     if (!file) return { ok: false }
-    const { filePath } = await dialog.showSaveDialog({
-      defaultPath: path.join(require('os').homedir(), 'Documents', file.filename),
-      title: 'Save File Permanently',
-    })
-    if (!filePath) return { ok: false, cancelled: true }
-    await fs.promises.copyFile(file.limboPath, filePath)
+    await fs.promises.copyFile(file.limboPath, file.originalPath)
     limboStore.delete(id)
     try { await fs.promises.unlink(file.limboPath) } catch {}
     getWindow()?.webContents.send('file:deleted', id)

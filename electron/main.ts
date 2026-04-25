@@ -17,6 +17,8 @@ import { watcherService } from "./services/watcher";
 import { registerFileHandlers } from "./ipc/file-handlers";
 import { registerSettingsHandlers } from "./ipc/settings-handlers";
 
+app.setName('Limbo')
+
 if (!app.requestSingleInstanceLock()) {
   app.quit();
   process.exit(0);
