@@ -8,10 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-### Electron App (the main product)
-
 ```bash
-cd electron-app
 npm install
 npm run dev            # Vite dev server + Electron with hot reload
 npm run build          # Windows build: tsc + vite build + electron-builder → release/
@@ -20,30 +17,13 @@ npm run build:renderer # Build just the React UI
 npm run build:electron # Compile just the Electron main process
 ```
 
-### Website (marketing site)
-
-```bash
-cd website
-npm install
-npm run dev            # Dev server
-npm run build          # tsc + vite build
-npm run preview        # Preview production build
-```
-
 ### Type Checking
 
-There is no separate lint command. TypeScript strict mode enforces correctness at compile time. Run `npx tsc --noEmit` in either directory to type-check without building.
+There is no separate lint command. TypeScript strict mode enforces correctness at compile time. Run `npx tsc --noEmit` to type-check without building.
 
 No test framework is configured.
 
 ## Architecture
-
-### Two Separate Projects
-
-- `electron-app/` — the Windows desktop app (ships as an NSIS installer)
-- `website/` — the marketing/landing site (standalone Vite/React)
-
-Both use React 18 + TypeScript 5 + Vite 5 + Tailwind CSS 3.
 
 ### Electron App Layers
 

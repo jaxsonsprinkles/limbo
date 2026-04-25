@@ -25,20 +25,16 @@ When a file lands in a watched folder (your Downloads folder by default), Limbo:
 - **Extension filters** — include or exclude specific file types
 - **Image thumbnails** — inline previews for intercepted images
 - **Sound on arrival** — optional chime when a file is intercepted
-- **Startup launch** — runs with Windows, ready before your first download
+- **Startup launch** — runs with Windows and macOS, ready before your first download
 - **100% local** — no cloud, no account, no telemetry
 
 ## Project structure
 
 ```
 limbo/
-├── electron-app/     # The Electron desktop app (Windows)
-│   ├── electron/     # Main process: IPC handlers, file watcher, services
-│   ├── src/          # React renderer: UI components, store, pages
-│   └── resources/    # Icons and static assets
-└── website/          # Promotional website (React + Vite)
-    └── src/
-        └── components/
+├── electron/     # Main process: IPC handlers, file watcher, services
+├── src/          # React renderer: UI components, store, pages
+└── resources/    # Icons and static assets
 ```
 
 ## Development
@@ -46,20 +42,11 @@ limbo/
 ### Prerequisites
 
 - Node.js 18+
-- Windows (the app is Windows-only; the website builds anywhere)
+- Windows or macOS
 
 ### Run the app
 
 ```bash
-cd electron-app
-npm install
-npm run dev
-```
-
-### Run the website
-
-```bash
-cd website
 npm install
 npm run dev
 ```
@@ -67,15 +54,13 @@ npm run dev
 ### Build the app for distribution
 
 ```bash
-cd electron-app
-npm run build
+npm run build        # Windows
+npm run build:mac    # macOS (must run on a Mac)
 ```
 
-This produces a distributable in `electron-app/dist/`.
+This produces a distributable in `release/`.
 
 ## Tech stack
-
-**App**
 
 - [Electron](https://www.electronjs.org/) — desktop shell
 - [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) — UI
@@ -83,10 +68,6 @@ This produces a distributable in `electron-app/dist/`.
 - [Chokidar](https://github.com/paulmillr/chokidar) — file system watching
 - [Tailwind CSS](https://tailwindcss.com/) — styling
 - [Vite](https://vite.dev/) — bundler
-
-**Website**
-
-- React + TypeScript + Vite + Tailwind CSS
 
 ## Contributing
 
