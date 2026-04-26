@@ -33,7 +33,7 @@ export function registerFileHandlers(getWindow: () => BrowserWindow | null) {
     limboStore.delete(id)
     try { await fs.promises.unlink(file.limboPath) } catch {}
     getWindow()?.webContents.send('file:deleted', id)
-    return { ok: true }
+    return { ok: true, savedPath: file.originalPath }
   })
 
   ipcMain.handle('files:copyToClipboard', async (_, id: string) => {

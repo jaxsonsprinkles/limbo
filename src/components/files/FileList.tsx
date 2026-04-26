@@ -35,7 +35,7 @@ export function FileListRow({ file, secondsRemaining, onRemove, onUpdate, onToas
   async function handleSave() {
     const res = await api.files.savePermanently(file.id)
     if (res.cancelled) return
-    if (res.ok) { onRemove(file.id); onToast('File saved', 'success') }
+    if (res.ok) { onRemove(file.id); onToast(`Saved to ${res.savedPath ?? 'original location'}`, 'success') }
     else onToast('Failed to save', 'error')
   }
 

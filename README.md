@@ -60,6 +60,11 @@ npm run build:mac    # macOS (must run on a Mac)
 
 This produces a distributable in `release/`.
 
+> **macOS:** Right-click Limbo.app and choose **Open** the first time.
+> macOS blocks apps from unidentified developers by default.
+>
+> **Windows:** Click **More info → Run anyway** if SmartScreen appears.
+
 ## Tech stack
 
 - [Electron](https://www.electronjs.org/) — desktop shell

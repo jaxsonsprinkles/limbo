@@ -68,7 +68,7 @@ export function FileCard({
     if (res.cancelled) return;
     if (res.ok) {
       onRemove(file.id);
-      onToast("File saved", "success");
+      onToast(`Saved to ${res.savedPath ?? 'original location'}`, "success");
     } else onToast("Failed to save", "error");
   }
 

@@ -6,7 +6,7 @@ declare global {
       files: {
         getAll: () => Promise<LimboFile[]>
         delete: (id: string) => Promise<{ ok: boolean }>
-        savePermanently: (id: string) => Promise<{ ok: boolean; cancelled?: boolean }>
+        savePermanently: (id: string) => Promise<{ ok: boolean; cancelled?: boolean; savedPath?: string }>
         copyToClipboard: (id: string) => Promise<{ ok: boolean }>
         openInExplorer: (id: string) => Promise<{ ok: boolean }>
         pinToggle: (id: string) => Promise<{ ok: boolean; isPinned: boolean }>

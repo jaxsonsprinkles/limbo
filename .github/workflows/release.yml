@@ -5,10 +5,37 @@ on:
     branches: [main]
 
 jobs:
-  release-windows:
+  create-release:
+    runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: Limbo v${{ steps.version.outputs.version }}
+          draft: false
+          body: |
+            ## Download
+            - **Windows**: Download the `.exe` installer below
+            - **macOS**: Download the `.dmg` below (Intel + Apple Silicon)
+
+            > ⚠️ **macOS**: Right-click Limbo.app and choose **Open** the first time — macOS blocks apps from unidentified developers by default.
+            >
+            > ⚠️ **Windows**: Click **More info → Run anyway** if SmartScreen appears.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-windows:
+    needs: create-release
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -23,16 +50,36 @@ jobs:
       - name: Build
         run: npm run build -- --publish never
 
-      - name: Get version
-        id: version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $env:GITHUB_OUTPUT
-
-      - name: Create release
+      - name: Upload Windows assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: Limbo v${{ steps.version.outputs.version }}
-          files: release/*.exe
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: "release/*.{exe,blockmap}"
           fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-mac:
+    needs: create-release
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build:mac -- --publish never
+
+      - name: Upload macOS assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: release/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
