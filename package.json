@@ -1,7 +1,7 @@
 {
 	"name": "limbo",
 	"author": "Jaxson Sprinkles",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Ephemeral file management for Windows and macOS",
 	"main": "dist/electron/main.js",
 	"scripts": {
