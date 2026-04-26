@@ -71,7 +71,21 @@
 			"category": "public.app-category.productivity"
 		},
 		"dmg": {
-			"title": "Limbo"
+			"title": "Limbo",
+			"background": null,
+			"contents": [
+				{
+					"x": 130,
+					"y": 220,
+					"type": "file"
+				},
+				{
+					"x": 410,
+					"y": 220,
+					"type": "link",
+					"path": "/Applications"
+				}
+			]
 		},
 		"extraResources": [
 			{
