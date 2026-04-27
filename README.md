@@ -1,5 +1,11 @@
 # Limbo - Your downloads, on a leash
 
+
+
+https://github.com/user-attachments/assets/e8d31f34-efbc-436e-9a4a-3479d38c5ffa
+
+
+
 Limbo sits in your system tray and intercepts every file you download. Each file gets a countdown timer — act on it or let it disappear automatically. No more Downloads folder with 4,000 files you'll never open again.
 
 ---
